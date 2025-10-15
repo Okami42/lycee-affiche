@@ -26,11 +26,20 @@ export default async function handler(req, res) {
     if (req.method === 'POST') {
       // Envoyer un message
       const { lyceeId, author, text } = req.body
+
+      console.log('POST /api/chat:', { lyceeId, author, text })
+
+      if (!lyceeId || !author || !text) {
+        return res.status(400).json({ error: 'Missing required fields: lyceeId, author, text' })
+      }
+
       const result = await sql`
         INSERT INTO chat_messages (lycee_id, author, text)
         VALUES (${lyceeId}, ${author}, ${text})
         RETURNING *
       `
+
+      console.log('Message inserted:', result[0])
       return res.status(201).json(result[0])
     }
 

@@ -54,6 +54,13 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ lyceeId, author, text })
     })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      console.error('Erreur API sendChatMessage:', res.status, errorText)
+      throw new Error(`Erreur ${res.status}: ${errorText}`)
+    }
+
     return res.json()
   },
 

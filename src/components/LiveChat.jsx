@@ -8,6 +8,7 @@ function LiveChat({ currentUser, lycee }) {
   const [newMessage, setNewMessage] = useState('')
   const [onlineUsers, setOnlineUsers] = useState([])
   const messagesEndRef = useRef(null)
+  const inputRef = useRef(null)
 
   // Charger les messages depuis l'API
   useEffect(() => {
@@ -75,12 +76,17 @@ function LiveChat({ currentUser, lycee }) {
   const handleSendMessage = async (e) => {
     e.preventDefault()
     if (newMessage.trim()) {
+      const messageToSend = newMessage
+      setNewMessage('') // Vider immédiatement pour meilleure UX
       try {
-        await api.sendChatMessage(lycee.id, currentUser.pseudo, newMessage)
-        setNewMessage('')
-        loadMessages() // Recharger immédiatement
+        console.log('Envoi du message:', messageToSend)
+        const result = await api.sendChatMessage(lycee.id, currentUser.pseudo, messageToSend)
+        console.log('Message envoyé:', result)
+        await loadMessages() // Recharger immédiatement
       } catch (error) {
         console.error('Erreur envoi message:', error)
+        alert('Erreur lors de l\'envoi du message. Vérifiez la console.')
+        setNewMessage(messageToSend) // Restaurer le message en cas d'erreur
       }
     }
   }
