@@ -23,6 +23,13 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updates)
     })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      console.error('Erreur API updateGossip:', res.status, errorText)
+      throw new Error(`Erreur ${res.status}: ${errorText}`)
+    }
+
     return res.json()
   },
 

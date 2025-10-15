@@ -38,25 +38,37 @@ export default async function handler(req, res) {
       const { id } = req.query
       const { likes, comments } = req.body
 
+      console.log('PUT request:', { id, likes, comments })
+
+      if (!id) {
+        return res.status(400).json({ error: 'Missing id parameter' })
+      }
+
       if (likes !== undefined) {
+        console.log('Updating likes for gossip', id, 'with', likes)
         const result = await sql`
           UPDATE gossips
           SET likes = ${JSON.stringify(likes)}::jsonb
           WHERE id = ${id}
           RETURNING *
         `
+        console.log('Update result:', result)
         return res.status(200).json(result[0])
       }
 
       if (comments !== undefined) {
+        console.log('Updating comments for gossip', id, 'with', comments)
         const result = await sql`
           UPDATE gossips
           SET comments = ${JSON.stringify(comments)}::jsonb
           WHERE id = ${id}
           RETURNING *
         `
+        console.log('Update result:', result)
         return res.status(200).json(result[0])
       }
+
+      return res.status(400).json({ error: 'Missing likes or comments in body' })
     }
 
     if (req.method === 'DELETE') {

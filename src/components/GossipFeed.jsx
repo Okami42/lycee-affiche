@@ -55,24 +55,34 @@ function GossipFeed({ lycee, currentUser, onBack, onLogout }) {
   const handleLike = async (gossipId) => {
     try {
       const gossip = gossips.find(g => g.id === gossipId)
-      if (!gossip) return
+      if (!gossip) {
+        console.error('Gossip non trouvé:', gossipId)
+        return
+      }
 
       const hasLiked = gossip.likes.includes(currentUser.pseudo)
       const newLikes = hasLiked
         ? gossip.likes.filter(user => user !== currentUser.pseudo)
         : [...gossip.likes, currentUser.pseudo]
 
-      await api.updateGossip(gossipId, { likes: newLikes })
-      loadGossips() // Recharger immédiatement
+      console.log('Mise à jour des likes:', { gossipId, newLikes })
+      const result = await api.updateGossip(gossipId, { likes: newLikes })
+      console.log('Résultat:', result)
+
+      await loadGossips() // Recharger immédiatement
     } catch (error) {
       console.error('Erreur lors du like:', error)
+      alert('Erreur lors du like. Vérifiez la console.')
     }
   }
 
   const handleComment = async (gossipId, commentText) => {
     try {
       const gossip = gossips.find(g => g.id === gossipId)
-      if (!gossip) return
+      if (!gossip) {
+        console.error('Gossip non trouvé:', gossipId)
+        return
+      }
 
       const newComment = {
         id: Date.now(),
@@ -82,10 +92,15 @@ function GossipFeed({ lycee, currentUser, onBack, onLogout }) {
       }
 
       const newComments = [...gossip.comments, newComment]
-      await api.updateGossip(gossipId, { comments: newComments })
-      loadGossips() // Recharger immédiatement
+      console.log('Ajout du commentaire:', { gossipId, newComment, newComments })
+
+      const result = await api.updateGossip(gossipId, { comments: newComments })
+      console.log('Résultat:', result)
+
+      await loadGossips() // Recharger immédiatement
     } catch (error) {
       console.error('Erreur lors du commentaire:', error)
+      alert('Erreur lors du commentaire. Vérifiez la console.')
     }
   }
 
