@@ -163,6 +163,16 @@
   border: 1px solid var(--border-color);
 }
 
+.chat-user-pill.admin-pill {
+  border-color: #e53935;
+  background: #ffebee;
+}
+
+.chat-user-pill .admin-name {
+  color: #e53935;
+  font-weight: 700;
+}
+
 .user-avatar-small {
   width: 20px;
   height: 20px;
@@ -174,6 +184,10 @@
   justify-content: center;
   font-size: 11px;
   font-weight: 600;
+}
+
+.user-avatar-small.admin-avatar-small {
+  background: linear-gradient(135deg, #e53935 0%, #c62828 100%);
 }
 
 /* Messages */
@@ -244,6 +258,10 @@
   flex-shrink: 0;
 }
 
+.message-avatar.admin-avatar {
+  background: linear-gradient(135deg, #e53935 0%, #c62828 100%);
+}
+
 .message-content {
   display: flex;
   flex-direction: column;
@@ -282,9 +300,18 @@
   margin-bottom: 4px;
 }
 
+.message-author-in-bubble.admin-name {
+  color: #e53935;
+}
+
 .own-message .message-author-in-bubble {
   color: white;
   opacity: 0.95;
+}
+
+.own-message .message-author-in-bubble.admin-name {
+  color: white;
+  opacity: 1;
 }
 
 .message-bubble p {

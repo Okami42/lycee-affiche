@@ -125,9 +125,13 @@ function LiveChat({ currentUser, lycee }) {
 
           <div className="chat-users">
             {onlineUsers.map((user, index) => (
-              <div key={index} className="chat-user-pill">
-                <span className="user-avatar-small">{user.pseudo[0].toUpperCase()}</span>
-                {user.pseudo}
+              <div key={index} className={`chat-user-pill ${user.pseudo === 'Admin' ? 'admin-pill' : ''}`}>
+                <span className={`user-avatar-small ${user.pseudo === 'Admin' ? 'admin-avatar-small' : ''}`}>
+                  {user.pseudo[0].toUpperCase()}
+                </span>
+                <span className={user.pseudo === 'Admin' ? 'admin-name' : ''}>
+                  {user.pseudo}
+                </span>
               </div>
             ))}
           </div>
@@ -148,19 +152,21 @@ function LiveChat({ currentUser, lycee }) {
                   className={`chat-message ${message.author === currentUser.pseudo ? 'own-message' : ''}`}
                 >
                   {message.author !== currentUser.pseudo && (
-                    <div className="message-avatar">
+                    <div className={`message-avatar ${message.author === 'Admin' ? 'admin-avatar' : ''}`}>
                       {message.author[0].toUpperCase()}
                     </div>
                   )}
                   <div className="message-content">
                     <div className="message-bubble">
-                      <span className="message-author-in-bubble">{message.author}</span>
+                      <span className={`message-author-in-bubble ${message.author === 'Admin' ? 'admin-name' : ''}`}>
+                        {message.author}
+                      </span>
                       <p>{message.text}</p>
                       <span className="message-time">{formatTimestamp(message.timestamp)}</span>
                     </div>
                   </div>
                   {message.author === currentUser.pseudo && (
-                    <div className="message-avatar">
+                    <div className={`message-avatar ${message.author === 'Admin' ? 'admin-avatar' : ''}`}>
                       {message.author[0].toUpperCase()}
                     </div>
                   )}

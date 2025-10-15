@@ -114,7 +114,7 @@ function GossipFeed({ lycee, currentUser, onBack, onLogout }) {
           </button>
           <div className="header-info">
             <h1>{lycee.name}</h1>
-            <p>Les potins les plus chauds de {lycee.city}</p>
+            <p>Les meilleurs affiches de {lycee.city}</p>
           </div>
           <button className="logout-btn" onClick={onLogout}>
             Déconnexion

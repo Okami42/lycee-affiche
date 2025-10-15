@@ -68,6 +68,15 @@
   font-size: 15px;
 }
 
+.author-name.admin-name {
+  color: #e53935;
+  font-weight: 700;
+}
+
+.author-avatar.admin-avatar {
+  background: linear-gradient(135deg, #e53935 0%, #c62828 100%);
+}
+
 .timestamp {
   font-size: 13px;
   color: var(--text-light);
@@ -172,6 +181,15 @@
   font-weight: 600;
   color: var(--text-dark);
   font-size: 14px;
+}
+
+.comment-author.admin-name {
+  color: #e53935;
+  font-weight: 700;
+}
+
+.comment-avatar.admin-avatar {
+  background: linear-gradient(135deg, #e53935 0%, #c62828 100%);
 }
 
 .comment-timestamp {

@@ -33,11 +33,13 @@ function GossipPost({ gossip, currentUser, onLike, onComment, onDelete }) {
     <div className="gossip-post">
       <div className="gossip-header-post">
         <div className="author-info">
-          <div className="author-avatar">
+          <div className={`author-avatar ${gossip.author === 'Admin' ? 'admin-avatar' : ''}`}>
             {gossip.author[0].toUpperCase()}
           </div>
           <div className="author-details">
-            <span className="author-name">{gossip.author}</span>
+            <span className={`author-name ${gossip.author === 'Admin' ? 'admin-name' : ''}`}>
+              {gossip.author}
+            </span>
             <span className="timestamp">{formatTimestamp(gossip.timestamp)}</span>
           </div>
         </div>
@@ -86,12 +88,14 @@ function GossipPost({ gossip, currentUser, onLike, onComment, onDelete }) {
           <div className="comments-list">
             {gossip.comments.map(comment => (
               <div key={comment.id} className="comment">
-                <div className="comment-avatar">
+                <div className={`comment-avatar ${comment.author === 'Admin' ? 'admin-avatar' : ''}`}>
                   {comment.author[0].toUpperCase()}
                 </div>
                 <div className="comment-content">
                   <div className="comment-header">
-                    <span className="comment-author">{comment.author}</span>
+                    <span className={`comment-author ${comment.author === 'Admin' ? 'admin-name' : ''}`}>
+                      {comment.author}
+                    </span>
                     <span className="comment-timestamp">{formatTimestamp(comment.timestamp)}</span>
                   </div>
                   <p className="comment-text">{comment.text}</p>
