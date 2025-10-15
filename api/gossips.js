@@ -40,7 +40,7 @@ export default async function handler(req, res) {
 
       if (likes !== undefined) {
         const result = await sql`
-          UPDATE gossips 
+          UPDATE gossips
           SET likes = ${JSON.stringify(likes)}::jsonb
           WHERE id = ${id}
           RETURNING *
@@ -50,12 +50,37 @@ export default async function handler(req, res) {
 
       if (comments !== undefined) {
         const result = await sql`
-          UPDATE gossips 
+          UPDATE gossips
           SET comments = ${JSON.stringify(comments)}::jsonb
           WHERE id = ${id}
           RETURNING *
         `
         return res.status(200).json(result[0])
+      }
+    }
+
+    if (req.method === 'DELETE') {
+      // Supprimer un gossip
+      const { id } = req.query
+      const { currentUser } = req.body
+
+      // Récupérer le gossip pour vérifier l'auteur
+      const gossip = await sql`
+        SELECT * FROM gossips WHERE id = ${id}
+      `
+
+      if (gossip.length === 0) {
+        return res.status(404).json({ error: 'Gossip not found' })
+      }
+
+      // Vérifier si l'utilisateur est Admin ou l'auteur du gossip
+      if (currentUser === 'Admin' || gossip[0].author === currentUser) {
+        await sql`
+          DELETE FROM gossips WHERE id = ${id}
+        `
+        return res.status(200).json({ message: 'Gossip deleted successfully' })
+      } else {
+        return res.status(403).json({ error: 'Unauthorized' })
       }
     }
 

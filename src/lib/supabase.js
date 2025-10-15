@@ -18,10 +18,19 @@ export const api = {
   },
 
   async updateGossip(id, updates) {
-    const res = await fetch(`${API_BASE}/gossips/${id}`, {
+    const res = await fetch(`${API_BASE}/gossips?id=${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updates)
+    })
+    return res.json()
+  },
+
+  async deleteGossip(id, currentUser) {
+    const res = await fetch(`${API_BASE}/gossips?id=${id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currentUser })
     })
     return res.json()
   },

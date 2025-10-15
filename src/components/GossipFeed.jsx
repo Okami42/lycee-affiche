@@ -89,6 +89,20 @@ function GossipFeed({ lycee, currentUser, onBack, onLogout }) {
     }
   }
 
+  const handleDelete = async (gossipId) => {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cette affiche ?')) {
+      return
+    }
+
+    try {
+      await api.deleteGossip(gossipId, currentUser.pseudo)
+      loadGossips() // Recharger immédiatement
+    } catch (error) {
+      console.error('Erreur lors de la suppression:', error)
+      alert('Erreur lors de la suppression.')
+    }
+  }
+
   return (
     <div className="gossip-feed-container">
       <header className="gossip-header">
@@ -134,6 +148,7 @@ function GossipFeed({ lycee, currentUser, onBack, onLogout }) {
                   currentUser={currentUser}
                   onLike={handleLike}
                   onComment={handleComment}
+                  onDelete={handleDelete}
                 />
               ))
             )}
