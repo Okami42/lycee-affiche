@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import './LiveChat.css'
+import { api } from '../lib/supabase'
 
 function LiveChat({ currentUser, lycee }) {
   const [isOpen, setIsOpen] = useState(false)
@@ -7,88 +8,80 @@ function LiveChat({ currentUser, lycee }) {
   const [newMessage, setNewMessage] = useState('')
   const [onlineUsers, setOnlineUsers] = useState([])
   const messagesEndRef = useRef(null)
-  const chatStorageKey = `chat_${lycee.id}`
-  const usersStorageKey = `chat_users_${lycee.id}`
 
-  // Charger les messages depuis le localStorage
-  useEffect(() => {
-    const savedMessages = localStorage.getItem(chatStorageKey)
-    if (savedMessages) {
-      setMessages(JSON.parse(savedMessages))
-    }
-  }, [chatStorageKey])
-
-  // Gérer les utilisateurs en ligne
+  // Charger les messages depuis l'API
   useEffect(() => {
     if (isOpen) {
-      // Ajouter l'utilisateur actuel à la liste des utilisateurs en ligne
-      const users = JSON.parse(localStorage.getItem(usersStorageKey) || '[]')
-      const userEntry = {
-        pseudo: currentUser.pseudo,
-        timestamp: Date.now()
-      }
-      
-      // Filtrer les utilisateurs inactifs (plus de 5 minutes)
-      const activeUsers = users.filter(u => Date.now() - u.timestamp < 300000)
-      
-      // Ajouter ou mettre à jour l'utilisateur actuel
-      const updatedUsers = activeUsers.filter(u => u.pseudo !== currentUser.pseudo)
-      updatedUsers.push(userEntry)
-      
-      localStorage.setItem(usersStorageKey, JSON.stringify(updatedUsers))
-      setOnlineUsers(updatedUsers)
+      loadMessages()
+      loadOnlineUsers()
 
-      // Mettre à jour la présence toutes les 30 secondes
+      // Polling pour le temps réel
       const interval = setInterval(() => {
-        const users = JSON.parse(localStorage.getItem(usersStorageKey) || '[]')
-        const activeUsers = users.filter(u => Date.now() - u.timestamp < 300000)
-        const updatedUsers = activeUsers.filter(u => u.pseudo !== currentUser.pseudo)
-        updatedUsers.push({ pseudo: currentUser.pseudo, timestamp: Date.now() })
-        localStorage.setItem(usersStorageKey, JSON.stringify(updatedUsers))
-        setOnlineUsers(updatedUsers)
-      }, 30000)
+        loadMessages()
+        loadOnlineUsers()
+      }, 2000)
 
       return () => clearInterval(interval)
     }
-  }, [isOpen, currentUser.pseudo, usersStorageKey])
+  }, [isOpen, lycee.id])
 
-  // Écouter les changements dans le localStorage (pour la synchronisation entre onglets)
-  useEffect(() => {
-    const handleStorageChange = (e) => {
-      if (e.key === chatStorageKey) {
-        const newMessages = JSON.parse(e.newValue || '[]')
-        setMessages(newMessages)
-      }
-      if (e.key === usersStorageKey) {
-        const users = JSON.parse(e.newValue || '[]')
-        const activeUsers = users.filter(u => Date.now() - u.timestamp < 300000)
-        setOnlineUsers(activeUsers)
-      }
+  const loadMessages = async () => {
+    try {
+      const data = await api.getChatMessages(lycee.id)
+      const formattedMessages = data.map(m => ({
+        id: m.id,
+        author: m.author,
+        text: m.text,
+        timestamp: new Date(m.created_at).getTime()
+      }))
+      setMessages(formattedMessages)
+    } catch (error) {
+      console.error('Erreur chargement messages:', error)
     }
+  }
 
-    window.addEventListener('storage', handleStorageChange)
-    return () => window.removeEventListener('storage', handleStorageChange)
-  }, [chatStorageKey, usersStorageKey])
+  const loadOnlineUsers = async () => {
+    try {
+      const data = await api.getOnlineUsers(lycee.id)
+      setOnlineUsers(data.map(u => ({ pseudo: u.pseudo, timestamp: new Date(u.last_seen).getTime() })))
+    } catch (error) {
+      console.error('Erreur chargement utilisateurs:', error)
+    }
+  }
+
+  // Mettre à jour la présence de l'utilisateur
+  useEffect(() => {
+    if (isOpen) {
+      updatePresence()
+
+      const interval = setInterval(updatePresence, 30000)
+      return () => clearInterval(interval)
+    }
+  }, [isOpen, currentUser.pseudo, lycee.id])
+
+  const updatePresence = async () => {
+    try {
+      await api.updatePresence(lycee.id, currentUser.pseudo)
+    } catch (error) {
+      console.error('Erreur mise à jour présence:', error)
+    }
+  }
 
   // Auto-scroll vers le bas
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async (e) => {
     e.preventDefault()
     if (newMessage.trim()) {
-      const message = {
-        id: Date.now(),
-        author: currentUser.pseudo,
-        text: newMessage,
-        timestamp: Date.now()
+      try {
+        await api.sendChatMessage(lycee.id, currentUser.pseudo, newMessage)
+        setNewMessage('')
+        loadMessages() // Recharger immédiatement
+      } catch (error) {
+        console.error('Erreur envoi message:', error)
       }
-      
-      const updatedMessages = [...messages, message]
-      setMessages(updatedMessages)
-      localStorage.setItem(chatStorageKey, JSON.stringify(updatedMessages))
-      setNewMessage('')
     }
   }
 

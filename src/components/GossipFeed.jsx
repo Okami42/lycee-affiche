@@ -3,88 +3,90 @@ import './GossipFeed.css'
 import GossipPost from './GossipPost'
 import NewGossipModal from './NewGossipModal'
 import LiveChat from './LiveChat'
+import { api } from '../lib/supabase'
 
 function GossipFeed({ lycee, currentUser, onBack, onLogout }) {
   const [gossips, setGossips] = useState([])
   const [showNewGossipModal, setShowNewGossipModal] = useState(false)
 
-  // Charger les potins depuis le localStorage
+  // Charger les potins depuis l'API
   useEffect(() => {
-    const storageKey = `gossips_${lycee.id}`
-    const savedGossips = localStorage.getItem(storageKey)
-    if (savedGossips) {
-      setGossips(JSON.parse(savedGossips))
-    } else {
-      // Potins d'exemple
-      const exampleGossips = [
-        {
-          id: Date.now(),
-          author: 'Admin',
-          content: 'Faites vous plaisir les gars BALANCER TOUT !',
-          timestamp: Date.now(),
-          likes: [],
-          comments: []
-        }
-      ]
-      setGossips(exampleGossips)
-      localStorage.setItem(storageKey, JSON.stringify(exampleGossips))
-    }
+    loadGossips()
+
+    // Polling pour simuler le temps réel (toutes les 3 secondes)
+    const interval = setInterval(loadGossips, 3000)
+
+    return () => clearInterval(interval)
   }, [lycee.id])
 
-  // Sauvegarder les potins dans le localStorage
-  const saveGossips = (newGossips) => {
-    const storageKey = `gossips_${lycee.id}`
-    localStorage.setItem(storageKey, JSON.stringify(newGossips))
-    setGossips(newGossips)
-  }
+  const loadGossips = async () => {
+    try {
+      const data = await api.getGossips(lycee.id)
 
-  const handleNewGossip = (content) => {
-    const newGossip = {
-      id: Date.now(),
-      author: currentUser.pseudo,
-      content,
-      timestamp: Date.now(),
-      likes: [],
-      comments: []
+      if (data && data.length > 0) {
+        const formattedGossips = data.map(g => ({
+          id: g.id,
+          author: g.author,
+          content: g.content,
+          timestamp: new Date(g.created_at).getTime(),
+          likes: g.likes || [],
+          comments: g.comments || []
+        }))
+        setGossips(formattedGossips)
+      } else {
+        setGossips([])
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des gossips:', error)
     }
-    const updatedGossips = [newGossip, ...gossips]
-    saveGossips(updatedGossips)
-    setShowNewGossipModal(false)
   }
 
-  const handleLike = (gossipId) => {
-    const updatedGossips = gossips.map(gossip => {
-      if (gossip.id === gossipId) {
-        const hasLiked = gossip.likes.includes(currentUser.pseudo)
-        return {
-          ...gossip,
-          likes: hasLiked
-            ? gossip.likes.filter(user => user !== currentUser.pseudo)
-            : [...gossip.likes, currentUser.pseudo]
-        }
-      }
-      return gossip
-    })
-    saveGossips(updatedGossips)
+  const handleNewGossip = async (content) => {
+    try {
+      await api.createGossip(lycee.id, currentUser.pseudo, content)
+      setShowNewGossipModal(false)
+      loadGossips() // Recharger immédiatement
+    } catch (error) {
+      console.error('Erreur lors de la création du gossip:', error)
+      alert('Erreur lors de la publication.')
+    }
   }
 
-  const handleComment = (gossipId, commentText) => {
-    const updatedGossips = gossips.map(gossip => {
-      if (gossip.id === gossipId) {
-        const newComment = {
-          id: Date.now(),
-          author: currentUser.pseudo,
-          text: commentText,
-          timestamp: Date.now()
-        }
-        return {
-          ...gossip,
-          comments: [...gossip.comments, newComment]
-        }
+  const handleLike = async (gossipId) => {
+    try {
+      const gossip = gossips.find(g => g.id === gossipId)
+      if (!gossip) return
+
+      const hasLiked = gossip.likes.includes(currentUser.pseudo)
+      const newLikes = hasLiked
+        ? gossip.likes.filter(user => user !== currentUser.pseudo)
+        : [...gossip.likes, currentUser.pseudo]
+
+      await api.updateGossip(gossipId, { likes: newLikes })
+      loadGossips() // Recharger immédiatement
+    } catch (error) {
+      console.error('Erreur lors du like:', error)
+    }
+  }
+
+  const handleComment = async (gossipId, commentText) => {
+    try {
+      const gossip = gossips.find(g => g.id === gossipId)
+      if (!gossip) return
+
+      const newComment = {
+        id: Date.now(),
+        author: currentUser.pseudo,
+        text: commentText,
+        timestamp: Date.now()
       }
-      return gossip
-    })
-    saveGossips(updatedGossips)
+
+      const newComments = [...gossip.comments, newComment]
+      await api.updateGossip(gossipId, { comments: newComments })
+      loadGossips() // Recharger immédiatement
+    } catch (error) {
+      console.error('Erreur lors du commentaire:', error)
+    }
   }
 
   return (

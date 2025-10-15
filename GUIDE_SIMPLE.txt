@@ -1,0 +1,113 @@
+═══════════════════════════════════════════════════════════════
+  🎓 LYCÉE GOSSIP - GUIDE DE CONFIGURATION ULTRA-SIMPLE
+═══════════════════════════════════════════════════════════════
+
+📌 ÉTAPE 1 : CRÉER UN COMPTE NEON (2 minutes)
+───────────────────────────────────────────────────────────────
+1. Allez sur : https://neon.tech
+2. Cliquez sur "Sign up"
+3. Connectez-vous avec GitHub ou Google
+4. Créez un nouveau projet :
+   - Nom : lycee-gossip
+   - Région : Europe
+   - Cliquez sur "Create project"
+
+📌 ÉTAPE 2 : COPIER L'URL DE CONNEXION (30 secondes)
+───────────────────────────────────────────────────────────────
+1. Sur la page de votre projet, vous verrez "Connection string"
+2. Copiez l'URL complète qui ressemble à :
+   
+   postgresql://user:pass@ep-xxx.aws.neon.tech/neondb?sslmode=require
+
+3. GARDEZ-LA, vous en aurez besoin !
+
+📌 ÉTAPE 3 : CONFIGURER LE PROJET (1 minute)
+───────────────────────────────────────────────────────────────
+1. Ouvrez le fichier ".env" dans le dossier du projet
+2. Trouvez la ligne qui commence par "DATABASE_URL="
+3. Remplacez tout après le "=" par votre URL copiée
+4. Sauvegardez le fichier
+
+📌 ÉTAPE 4 : INITIALISER LA BASE DE DONNÉES (1 minute)
+───────────────────────────────────────────────────────────────
+MÉTHODE FACILE :
+1. Ouvrez un terminal dans le dossier du projet
+2. Tapez : npm run dev
+3. Ouvrez votre navigateur
+4. Allez sur : http://localhost:5173/api/init
+5. Vous devriez voir : {"message":"Database initialized successfully"}
+
+MÉTHODE ALTERNATIVE (si la méthode facile ne marche pas) :
+1. Retournez sur neon.tech
+2. Allez dans votre projet > SQL Editor
+3. Copiez le code SQL depuis le fichier SETUP_SUPABASE.md
+4. Collez-le et cliquez sur "Run"
+
+📌 ÉTAPE 5 : TESTER (30 secondes)
+───────────────────────────────────────────────────────────────
+1. Allez sur : http://localhost:5173
+2. Créez un compte
+3. Sélectionnez le lycée
+4. Publiez une affiche
+5. Ouvrez un autre onglet et connectez-vous avec un autre compte
+6. Vous devriez voir l'affiche apparaître !
+
+✅ ÇA MARCHE !
+
+═══════════════════════════════════════════════════════════════
+  🌐 DÉPLOYER SUR VERCEL (OPTIONNEL)
+═══════════════════════════════════════════════════════════════
+
+📌 ÉTAPE 1 : CRÉER UN COMPTE VERCEL
+───────────────────────────────────────────────────────────────
+1. Allez sur : https://vercel.com
+2. Cliquez sur "Sign up"
+3. Connectez-vous avec GitHub
+
+📌 ÉTAPE 2 : DÉPLOYER
+───────────────────────────────────────────────────────────────
+1. Cliquez sur "Add New" > "Project"
+2. Sélectionnez votre repository GitHub
+3. Dans "Environment Variables" :
+   - Nom : DATABASE_URL
+   - Valeur : votre URL Neon (celle de l'étape 2)
+4. Cliquez sur "Deploy"
+5. Attendez 2 minutes
+
+✅ VOTRE SITE EST EN LIGNE !
+
+═══════════════════════════════════════════════════════════════
+  ❓ PROBLÈMES ?
+═══════════════════════════════════════════════════════════════
+
+❌ "Cannot connect to database"
+   → Vérifiez que DATABASE_URL dans .env est correcte
+   → Vérifiez qu'il n'y a pas d'espaces avant ou après
+
+❌ "Table does not exist"
+   → Allez sur http://localhost:5173/api/init
+   → Ou exécutez le SQL dans Neon SQL Editor
+
+❌ Rien ne s'affiche
+   → Appuyez sur F12 pour ouvrir la console
+   → Regardez s'il y a des erreurs en rouge
+   → Redémarrez le serveur : npm run dev
+
+❌ Sur Vercel, ça ne marche pas
+   → Vérifiez que DATABASE_URL est dans Environment Variables
+   → Allez sur https://votre-site.vercel.app/api/init
+
+═══════════════════════════════════════════════════════════════
+  📞 BESOIN D'AIDE ?
+═══════════════════════════════════════════════════════════════
+
+Consultez les fichiers :
+- README_SETUP.md (guide rapide)
+- SETUP_SUPABASE.md (guide détaillé)
+
+Ou ouvrez la console (F12) et regardez les erreurs.
+
+═══════════════════════════════════════════════════════════════
+
+Bon courage ! 🚀
+
