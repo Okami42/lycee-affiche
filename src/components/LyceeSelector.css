@@ -1,0 +1,175 @@
+.lycee-selector-container {
+  min-height: 100vh;
+  background-color: var(--bg-light);
+}
+
+.lycee-header {
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  padding: 16px 20px;
+  box-shadow: var(--shadow);
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lycee-header .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lycee-header .logo svg {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.lycee-header .logo h1 {
+  color: white;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.logout-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.lycee-main {
+  padding: 40px 20px;
+}
+
+.lycee-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.welcome-section {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.icon-building {
+  display: inline-flex;
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+
+.welcome-section h2 {
+  color: var(--text-dark);
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.lycee-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lycee-item {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s;
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+
+.lycee-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  color: white;
+}
+
+.lycee-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lycee-info > svg {
+  color: var(--primary-blue);
+  flex-shrink: 0;
+}
+
+.lycee-item:hover .lycee-info > svg {
+  color: white;
+}
+
+.lycee-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lycee-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.lycee-item:hover .lycee-name {
+  color: white;
+}
+
+.lycee-city {
+  font-size: 13px;
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.lycee-item:hover .lycee-city {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.arrow-icon {
+  color: var(--text-light);
+  flex-shrink: 0;
+}
+
+.lycee-item:hover .arrow-icon {
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .lycee-main {
+    padding: 20px 16px;
+  }
+
+  .welcome-section h2 {
+    font-size: 24px;
+  }
+
+  .lycee-item {
+    padding: 16px;
+  }
+
+  .lycee-name {
+    font-size: 15px;
+  }
+}
+

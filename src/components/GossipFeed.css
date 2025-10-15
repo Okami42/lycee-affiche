@@ -1,0 +1,147 @@
+.gossip-feed-container {
+  min-height: 100vh;
+  background-color: var(--bg-light);
+}
+
+.gossip-header {
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  padding: 16px 20px;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.gossip-header .header-content {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.back-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.header-info {
+  flex: 1;
+}
+
+.header-info h1 {
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.header-info p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 13px;
+}
+
+.gossip-header .logout-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.gossip-header .logout-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.gossip-main {
+  padding: 24px 20px;
+}
+
+.gossip-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.new-gossip-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  color: white;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  transition: all 0.2s;
+}
+
+.new-gossip-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.gossips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.no-gossips {
+  background: white;
+  border-radius: 12px;
+  padding: 60px 20px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.no-gossips p {
+  color: var(--text-dark);
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.no-gossips .subtitle {
+  color: var(--text-light);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+@media (max-width: 768px) {
+  .gossip-main {
+    padding: 16px;
+  }
+
+  .header-info h1 {
+    font-size: 18px;
+  }
+
+  .header-info p {
+    font-size: 12px;
+  }
+
+  .gossip-header .logout-btn {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+}
+
