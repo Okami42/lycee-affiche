@@ -62,7 +62,7 @@ function Login({ onLogin }) {
             </svg>
             <h1>Lycée - Affiche</h1>
           </div>
-          <p className="subtitle">Les affiches de La Ramée</p>
+          <p className="subtitle">Merci de créer un compte sans votre nom prénom pour être anonyme</p>
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">

@@ -126,6 +126,47 @@
   font-weight: 400;
 }
 
+.chat-info-banner {
+  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+  color: white;
+  padding: 20px 24px;
+  border-radius: 12px;
+  margin-top: 24px;
+  margin-bottom: 80px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+  animation: slideInUp 0.5s ease;
+}
+
+.chat-info-banner svg {
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+.chat-info-banner p {
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.chat-info-banner strong {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 768px) {
   .gossip-main {
     padding: 16px;
@@ -142,6 +183,21 @@
   .gossip-header .logout-btn {
     padding: 6px 12px;
     font-size: 13px;
+  }
+
+  .chat-info-banner {
+    padding: 16px 18px;
+    gap: 12px;
+    margin-bottom: 60px;
+  }
+
+  .chat-info-banner svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .chat-info-banner p {
+    font-size: 14px;
   }
 }
 
