@@ -1,7 +1,7 @@
 import './LyceeSelector.css'
 
 const lycees = [
-  { id: 1, name: 'Lycée Pierre la Ramée', city: 'SAINT-QUENTIN' },
+  { id: 1, name: 'Lycée DE TOUS SAINT QUENTIN', city: 'SAINT-QUENTIN' },
 ]
 
 function LyceeSelector({ onSelectLycee, onLogout, currentUser }) {
