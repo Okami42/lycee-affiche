@@ -29,12 +29,14 @@ function LiveChat({ currentUser, lycee }) {
   const loadMessages = async () => {
     try {
       const data = await api.getChatMessages(lycee.id)
+      console.log('Messages chargés depuis API:', data)
       const formattedMessages = data.map(m => ({
         id: m.id,
         author: m.author,
         text: m.text,
         timestamp: new Date(m.created_at).getTime()
       }))
+      console.log('Messages formatés:', formattedMessages)
       setMessages(formattedMessages)
     } catch (error) {
       console.error('Erreur chargement messages:', error)
